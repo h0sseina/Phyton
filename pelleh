@@ -1,0 +1,35 @@
+import random
+
+# تعریف تابع برای پرتاب تاس
+def roll_dice():
+    return random.randint(1, 6)
+
+# تعریف موقعیت مارها و پله‌ها
+ladders = {3: 22, 5: 8, 11: 26, 20: 29}
+snakes = {17: 4, 19: 7, 21: 9, 27: 1}
+
+# تابع اصلی بازی
+def play_game():
+    player_position = 0
+    while player_position < 30:
+        input("برای پرتاب تاس Enter بزنید...")
+        dice = roll_dice()
+        print(f"شما {dice} انداختید.")
+        
+        player_position += dice
+        
+        # بررسی وجود مار یا پله
+        if player_position in ladders:
+            print(f"شما به پله‌ای رسیدید! به موقعیت {ladders[player_position]} منتقل می‌شوید.")
+            player_position = ladders[player_position]
+        elif player_position in snakes:
+            print(f"شما به ماری برخورد کردید! به موقعیت {snakes[player_position]} منتقل می‌شوید.")
+            player_position = snakes[player_position]
+
+        print(f"موقعیت فعلی شما: {player_position}")
+
+    print("تبریک! شما بازی را بردید!")
+
+# شروع بازی
+if __name__ == "__main__":
+    play_game()
