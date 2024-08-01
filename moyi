@@ -1,0 +1,92 @@
+import pygame
+import random
+
+# تنظیمات اولیه
+WIDTH, HEIGHT = 800, 600
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+
+# کلاس موتور
+class Bike:
+    def __init__(self):
+        self.image = pygame.Surface((50, 30))
+        self.image.fill(RED)
+        self.rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT - 50))
+        self.speed = 5
+
+    def move(self, direction):
+        if direction == 'LEFT' and self.rect.left > 0:
+            self.rect.x -= self.speed
+        elif direction == 'RIGHT' and self.rect.right < WIDTH:
+            self.rect.x += self.speed
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+# کلاس مانع
+class Obstacle:
+    def __init__(self):
+        self.image = pygame.Surface((50, 30))
+        self.image.fill(BLACK)
+        self.rect = self.image.get_rect(center=(random.randint(0, WIDTH - 50), -30))
+
+    def fall(self):
+        self.rect.y += 5
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Motor Game")
+    clock = pygame.time.Clock()
+
+    bike = Bike()
+    obstacles = []
+    score = 0
+    running = True
+
+    while running:
+        screen.fill(WHITE)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            bike.move('LEFT')
+        if keys[pygame.K_RIGHT]:
+            bike.move('RIGHT')
+
+        # ایجاد موانع جدید
+        if random.randint(1, 20) == 1:
+            obstacles.append(Obstacle())
+
+        # حرکت موانع و بررسی برخورد
+        for obstacle in obstacles[:]:
+            obstacle.fall()
+            if obstacle.rect.top > HEIGHT:
+                obstacles.remove(obstacle)
+                score += 1
+            if bike.rect.colliderect(obstacle.rect):
+                running = False
+
+            obstacle.draw(screen)
+
+        bike.draw(screen)
+
+        # نمایش امتیاز
+        font = pygame.font.Font(None, 36)
+        text = font.render(f'Score: {score}', True, BLACK)
+        screen.blit(text, (10, 10))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
