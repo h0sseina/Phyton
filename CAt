@@ -1,0 +1,48 @@
+import random
+
+class Cat:
+    def __init__(self):
+        self.happiness = 5
+        self.hunger = 5
+
+    def feed(self):
+        if self.hunger > 0:
+            self.hunger -= 1
+            self.happiness += 1
+            print("گربه شما غذا خورد و خوشحال‌تر شد!")
+        else:
+            print("گربه شما سیر است!")
+
+    def play(self):
+        if self.happiness < 10:
+            self.happiness += 1
+            print("شما با گربه بازی کردید و او خوشحال‌تر شد!")
+        else:
+            print("گربه شما خیلی خوشحال است!")
+
+    def status(self):
+        print(f"سطح خوشحالی: {self.happiness}, سطح گرسنگی: {self.hunger}")
+
+def main():
+    cat = Cat()
+    while True:
+        cat.status()
+        print("چه کاری می‌خواهید انجام دهید؟")
+        print("1. غذا دادن به گربه")
+        print("2. بازی کردن با گربه")
+        print("3. خروج")
+        
+        choice = input("انتخاب خود را وارد کنید (1/2/3): ")
+        
+        if choice == '1':
+            cat.feed()
+        elif choice == '2':
+            cat.play()
+        elif choice == '3':
+            print("خروج از بازی!")
+            break
+        else:
+            print("انتخاب نامعتبر! لطفاً دوباره تلاش کنید.")
+
+if __name__ == "__main__":
+    main()
