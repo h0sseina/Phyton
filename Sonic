@@ -1,0 +1,58 @@
+   import pygame
+   import sys
+
+   # راه اندازی Pygame
+   pygame.init()
+
+   # تنظیمات صفحه نمایش
+   WIDTH, HEIGHT = 800, 600
+   screen = pygame.display.set_mode((WIDTH, HEIGHT))
+   pygame.display.set_caption("Sonic Game")
+
+   # رنگ‌ها
+   WHITE = (255, 255, 255)
+   BLUE = (0, 0, 255)
+
+   # کلاس برای شخصیت اصلی
+   class Player:
+       def __init__(self):
+           self.image = pygame.Surface((50, 50))
+           self.image.fill(BLUE)
+           self.rect = self.image.get_rect()
+           self.rect.center = (WIDTH // 2, HEIGHT // 2)
+           self.speed = 5
+
+       def move(self, keys):
+           if keys[pygame.K_LEFT]:
+               self.rect.x -= self.speed
+           if keys[pygame.K_RIGHT]:
+               self.rect.x += self.speed
+           if keys[pygame.K_UP]:
+               self.rect.y -= self.speed
+           if keys[pygame.K_DOWN]:
+               self.rect.y += self.speed
+
+       def draw(self, surface):
+           surface.blit(self.image, self.rect)
+
+   # حلقه اصلی بازی
+   def main():
+       player = Player()
+       clock = pygame.time.Clock()
+
+       while True:
+           for event in pygame.event.get():
+               if event.type == pygame.QUIT:
+                   pygame.quit()
+                   sys.exit()
+
+           keys = pygame.key.get_pressed()
+           player.move(keys)
+
+           screen.fill(WHITE)
+           player.draw(screen)
+           pygame.display.flip()
+           clock.tick(60)
+
+   if __name__ == "__main__":
+       main()
